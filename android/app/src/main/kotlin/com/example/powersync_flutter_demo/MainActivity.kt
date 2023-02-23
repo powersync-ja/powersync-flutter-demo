@@ -1,4 +1,4 @@
-package com.example.powersync_flutter_demo
+package co.powersync.flutter_demo
 
 import io.flutter.embedding.android.FlutterActivity
 

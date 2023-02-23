@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.powersync_flutter_demo">
+    package="co.powersync.flutter_demo">
    <application
         android:label="powersync_flutter_demo"
         android:name="${applicationName}"
