@@ -292,10 +292,10 @@ packages:
     dependency: "direct main"
     description:
       name: powersync
-      sha256: "36001b730b6ac33f4ab8387d26b2cc599482117fe21340cbb42b0948e714d716"
+      sha256: "22acf7b6d17ecfabe72229e9c52ccfd278397afa24d892f962cda312566d86da"
       url: "https://onepub.dev/api/aavdavuhno/"
     source: hosted
-    version: "0.1.0-preview3"
+    version: "0.1.0-preview4"
   process:
     dependency: transitive
     description:
