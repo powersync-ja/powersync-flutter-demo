@@ -36,6 +36,17 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+  powersync:
+    hosted:
+      url: https://onepub.dev/api/aavdavuhno/
+      name: powersync
+    version: ^0.1.0-preview3
+  path_provider: ^2.0.12
+  flutter_secure_storage: ^8.0.0
+  faker_dart: ^0.1.11
+  path: ^1.8.2
+  sqlite3: ^1.9.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
