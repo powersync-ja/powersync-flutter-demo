@@ -291,10 +291,9 @@ packages:
   powersync:
     dependency: "direct main"
     description:
-      name: powersync
-      sha256: "22acf7b6d17ecfabe72229e9c52ccfd278397afa24d892f962cda312566d86da"
-      url: "https://onepub.dev/api/aavdavuhno/"
-    source: hosted
+      path: "../flutter-test1/powersync"
+      relative: true
+    source: path
     version: "0.1.0-preview4"
   process:
     dependency: transitive
