@@ -16,7 +16,8 @@ void main() async {
         '[${record.loggerName}] ${record.level.name}: ${record.time}: ${record.message}');
   });
 
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding
+      .ensureInitialized(); //required to get sqlite filepath from path_provider before UI has initialized
   await openDatabase();
   final loggedIn = await demoConnector.hasCredentials();
   runApp(MyApp(loggedIn: loggedIn));
