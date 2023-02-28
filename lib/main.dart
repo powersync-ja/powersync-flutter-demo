@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import './login_page.dart';
 import './powersync.dart';
 import './query_widget.dart';
 import 'package:faker_dart/faker_dart.dart';
+import 'package:powersync/powersync.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +45,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late SyncStatus _connectionState;
+  StreamSubscription<SyncStatus>? _subscription;
+
+  @override
+  void initState() {
+    _connectionState = db.currentStatus;
+    _subscription = db.statusStream.listen((event) {
+      setState(() {
+        _connectionState = db.currentStatus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _subscription?.cancel();
+  }
+
   void _add() async {
     final faker = Faker.instance;
 
@@ -59,15 +81,57 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    const connectedIcon = IconButton(
+      icon: Icon(Icons.wifi),
+      tooltip: 'Connected',
+      onPressed: null,
+    );
+    const disconnectedIcon = IconButton(
+      icon: Icon(Icons.wifi_off),
+      tooltip: 'Not connected',
+      onPressed: null,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          _connectionState.connected ? connectedIcon : disconnectedIcon
+        ],
       ),
       body: const Center(child: QueryWidget(defaultQuery: defaultQuery)),
       floatingActionButton: FloatingActionButton(
         onPressed: _add,
         tooltip: 'Add',
         child: const Icon(Icons.add),
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(''),
+            ),
+            ListTile(
+              title: const Text('Sign Out'),
+              onTap: () async {
+                var navigator = Navigator.of(context);
+                await logout();
+
+                navigator.pushReplacement(MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ));
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

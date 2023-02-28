@@ -49,7 +49,7 @@ class _MyLoginPageState extends State<LoginPage> {
       _error = null;
     });
     try {
-      await demoConnector.devLogin(
+      await login(
           endpoint: _endpointController.text,
           user: _username,
           password: _passwordController.text);
@@ -105,7 +105,7 @@ class _MyLoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 20),
                       DropdownButton<String>(
-                        value: users.keys.first,
+                        value: _username,
                         onChanged: _busy
                             ? null
                             : (String? value) {

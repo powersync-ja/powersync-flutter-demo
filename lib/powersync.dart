@@ -10,6 +10,7 @@ const _storage = FlutterSecureStorage();
 
 const _credentialsKey = 'app_credentials';
 
+/// Override DevConnector to provide store credentials in persistent storage.
 class DemoConnector extends DevConnector {
   @override
   Future<DevCredentials?> loadDevCredentials() async {
@@ -38,6 +39,7 @@ const schema = Schema([
   Table('customers', [Column.text('name'), Column.text('email')])
 ]);
 
+/// Global reference to the database
 late PowerSyncDatabase db;
 
 Future<String> getDatabasePath() async {
@@ -46,6 +48,28 @@ Future<String> getDatabasePath() async {
 }
 
 Future<void> openDatabase() async {
+  // Open the local database
   db = PowerSyncDatabase(schema: schema, path: await getDatabasePath());
+
+  if (await demoConnector.hasCredentials()) {
+    // If the user is already logged in, connect immediately.
+    // Otherwise, connect once logged in.
+    db.connect(connector: demoConnector);
+  }
+}
+
+/// Log in and connect to the PowerSync service.
+Future<void> login(
+    {required String endpoint,
+    required String user,
+    required String password}) async {
+  await demoConnector.devLogin(
+      endpoint: endpoint, user: user, password: password);
   db.connect(connector: demoConnector);
+}
+
+/// Clear database and lg out
+Future<void> logout() async {
+  await db.disconnectedAndClear();
+  await demoConnector.clearDevToken();
 }
