@@ -6,8 +6,16 @@ import './powersync.dart';
 import './query_widget.dart';
 import 'package:faker_dart/faker_dart.dart';
 import 'package:powersync/powersync.dart';
+import 'package:logging/logging.dart';
 
 void main() async {
+  // Log info from PowerSync
+  Logger.root.level = Level.INFO;
+  Logger.root.onRecord.listen((record) {
+    print(
+        '[${record.loggerName}] ${record.level.name}: ${record.time}: ${record.message}');
+  });
+
   WidgetsFlutterBinding.ensureInitialized();
   await openDatabase();
   final loggedIn = await demoConnector.hasCredentials();
