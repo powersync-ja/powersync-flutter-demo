@@ -1,3 +1,4 @@
+//This file performs setup of the PowerSync database
 import 'package:powersync/powersync.dart';
 
 import 'package:path_provider/path_provider.dart';
