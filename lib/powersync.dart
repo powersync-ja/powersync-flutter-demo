@@ -36,6 +36,8 @@ const schema = Schema([
     Column.integer('quantity'),
     Column.text('user_id'),
     Column.text('customer_id'),
+  ], indexes: [
+    Index('makemodel', [IndexedColumn('make'), IndexedColumn('model')])
   ]),
   Table('customers', [Column.text('name'), Column.text('email')])
 ]);
@@ -69,7 +71,7 @@ Future<void> login(
   db.connect(connector: demoConnector);
 }
 
-/// Clear database and lg out
+/// Clear database and log out
 Future<void> logout() async {
   await db.disconnectedAndClear();
   await demoConnector.clearDevToken();

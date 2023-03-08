@@ -21,7 +21,7 @@ class QueryWidgetState extends State<QueryWidget> {
   late TextEditingController _controller;
   late String _query;
   String? _error;
-  StreamSubscription<ResultSet>? _subscription;
+  StreamSubscription? _subscription;
 
   QueryWidgetState();
 
