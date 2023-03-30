@@ -53,6 +53,7 @@ Future<String> getDatabasePath() async {
 Future<void> openDatabase() async {
   // Open the local database
   db = PowerSyncDatabase(schema: schema, path: await getDatabasePath());
+  await db.initialize();
 
   if (await demoConnector.hasCredentials()) {
     // If the user is already logged in, connect immediately.

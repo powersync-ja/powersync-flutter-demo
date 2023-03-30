@@ -300,10 +300,10 @@ packages:
     dependency: "direct main"
     description:
       name: powersync
-      sha256: "236cd49391eb7166a43dce245ce6dccc43936583dde16025358bc38bbfdf8bfa"
+      sha256: f2efdac66c8587087ec9a9664756962484dbe5176c604196d1331f245ee72d05
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0-preview.3"
+    version: "0.3.0-preview.4"
   process:
     dependency: transitive
     description:
@@ -326,13 +326,13 @@ packages:
     source: hosted
     version: "1.9.1"
   sqlite3:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: sqlite3
-      sha256: db6350456720a4088a364bbe02052d43056a5ffbd4816fe9d28310dcfbe0dc05
+      sha256: "822d321a008e194d7929357e5b58d2e4a04ab670d137182f9759152aa33180ff"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.1"
+    version: "1.10.1"
   sqlite3_flutter_libs:
     dependency: transitive
     description:
@@ -341,6 +341,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.12"
+  sqlite_async:
+    dependency: transitive
+    description:
+      name: sqlite_async
+      sha256: "1cbf8a72e41ff3cf1bc93817744b18ea83119678c92d6fccb1b69387610f3329"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   stack_trace:
     dependency: transitive
     description:
