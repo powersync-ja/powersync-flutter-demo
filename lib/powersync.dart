@@ -1,33 +1,37 @@
-//This file performs setup of the PowerSync database
+// This file performs setup of the PowerSync database
 import 'package:powersync/powersync.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-const _storage = FlutterSecureStorage();
-
-const _credentialsKey = 'app_credentials';
-
 /// Override DevConnector to provide store credentials in persistent storage.
 class DemoConnector extends DevConnector {
+  PowerSyncDatabase db;
+
+  DemoConnector(this.db);
+
   @override
   Future<DevCredentials?> loadDevCredentials() async {
-    return DevCredentials.fromOptionalString(
-        await _storage.read(key: _credentialsKey));
+    final row = await db.getOptional(
+        'SELECT data FROM credentials WHERE id = ?', ['dev_credentials']);
+    if (row == null) {
+      return null;
+    }
+    return DevCredentials.fromString(row['data']);
   }
 
   @override
   Future<void> storeDevCredentials(DevCredentials credentials) async {
-    await _storage.write(key: _credentialsKey, value: jsonEncode(credentials));
+    await db.execute(
+        'INSERT OR REPLACE INTO credentials(id, data) VALUES(?, ?)',
+        ['dev_credentials', jsonEncode(credentials)]);
   }
 }
 
-final demoConnector = DemoConnector();
+late final DemoConnector demoConnector;
 
-const schema = Schema([
+const schema = Schema(([
   Table('assets', [
     Column.text('created_at'),
     Column.text('make'),
@@ -39,11 +43,19 @@ const schema = Schema([
   ], indexes: [
     Index('makemodel', [IndexedColumn('make'), IndexedColumn('model')])
   ]),
-  Table('customers', [Column.text('name'), Column.text('email')])
-]);
+  Table('customers', [Column.text('name'), Column.text('email')]),
+
+  // Local-only table to store session credentials.
+  // Note: This stores the credentials in plaintext, used for simplicity in the demo.
+  // flutter_secure_storage may be a better option for storing sensitive credentials.
+  Table.localOnly(
+    'credentials',
+    [Column.text('data')],
+  )
+]));
 
 /// Global reference to the database
-late PowerSyncDatabase db;
+late final PowerSyncDatabase db;
 
 Future<String> getDatabasePath() async {
   final dir = await getApplicationSupportDirectory();
@@ -53,6 +65,9 @@ Future<String> getDatabasePath() async {
 Future<void> openDatabase() async {
   // Open the local database
   db = PowerSyncDatabase(schema: schema, path: await getDatabasePath());
+  await db.initialize();
+
+  demoConnector = DemoConnector(db);
 
   if (await demoConnector.hasCredentials()) {
     // If the user is already logged in, connect immediately.
@@ -73,6 +88,6 @@ Future<void> login(
 
 /// Clear database and log out
 Future<void> logout() async {
-  await db.disconnectedAndClear();
   await demoConnector.clearDevToken();
+  await db.disconnectedAndClear();
 }
