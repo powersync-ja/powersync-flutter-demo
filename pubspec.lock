@@ -247,10 +247,10 @@ packages:
     dependency: "direct main"
     description:
       name: powersync
-      sha256: "6f2defa10cbcdccff40d381ebfa32a33d24f8cc0eaa5577b31430eea060dda3d"
+      sha256: "4677d463b55953cef1ddb9aa3edde3889e7475d9fb6c31f9f4b40287f8c7e836"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0-preview.5"
+    version: "0.4.0-preview.6"
   process:
     dependency: transitive
     description:
@@ -292,10 +292,10 @@ packages:
     dependency: transitive
     description:
       name: sqlite_async
-      sha256: "1cbf8a72e41ff3cf1bc93817744b18ea83119678c92d6fccb1b69387610f3329"
+      sha256: "9a062d696ec78858b2e720c881b89f0c709593bc8509a0069acc92245db76648"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.1"
+    version: "0.4.0"
   stack_trace:
     dependency: transitive
     description:
