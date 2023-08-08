@@ -29,7 +29,7 @@ class DemoConnector extends DevConnector {
   }
 }
 
-late final DemoConnector demoConnector;
+late final DemoConnector _demoConnector;
 
 const schema = Schema(([
   Table('assets', [
@@ -62,17 +62,29 @@ Future<String> getDatabasePath() async {
   return join(dir.path, 'powersync-demo.db');
 }
 
+Future<bool> isLoggedIn() {
+  return _demoConnector.hasCredentials();
+}
+
+Future<String?> getUserId() {
+  return _demoConnector.getUserId();
+}
+
+Future<String?> getPowerSyncEndpoint() {
+  return _demoConnector.getEndpoint();
+}
+
 Future<void> openDatabase() async {
   // Open the local database
   db = PowerSyncDatabase(schema: schema, path: await getDatabasePath());
   await db.initialize();
 
-  demoConnector = DemoConnector(db);
+  _demoConnector = DemoConnector(db);
 
-  if (await demoConnector.hasCredentials()) {
+  if (await _demoConnector.hasCredentials()) {
     // If the user is already logged in, connect immediately.
     // Otherwise, connect once logged in.
-    db.connect(connector: demoConnector);
+    db.connect(connector: _demoConnector);
   }
 }
 
@@ -81,13 +93,13 @@ Future<void> login(
     {required String endpoint,
     required String user,
     required String password}) async {
-  await demoConnector.devLogin(
+  await _demoConnector.devLogin(
       endpoint: endpoint, user: user, password: password);
-  db.connect(connector: demoConnector);
+  db.connect(connector: _demoConnector);
 }
 
 /// Clear database and log out
 Future<void> logout() async {
-  await demoConnector.clearDevToken();
+  await _demoConnector.clearDevToken();
   await db.disconnectedAndClear();
 }

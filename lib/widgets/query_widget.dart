@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import './powersync.dart';
+import 'package:powersync/sqlite3.dart' as sqlite;
+
 import './resultset_table.dart';
-import 'package:sqlite3/common.dart';
+import '../powersync.dart';
 
 class QueryWidget extends StatefulWidget {
   final String defaultQuery;
@@ -17,7 +18,7 @@ class QueryWidget extends StatefulWidget {
 }
 
 class QueryWidgetState extends State<QueryWidget> {
-  ResultSet? _data;
+  sqlite.ResultSet? _data;
   late TextEditingController _controller;
   late String _query;
   String? _error;
@@ -54,7 +55,7 @@ class QueryWidgetState extends State<QueryWidget> {
       });
     }, onError: (e) {
       setState(() {
-        if (e is SqliteException) {
+        if (e is sqlite.SqliteException) {
           _error = "${e.message}!";
         } else {
           _error = e.toString();

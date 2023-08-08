@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:powersync_flutter_demo/main.dart';
 
-import './powersync.dart';
+import '../main.dart';
+import '../powersync.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _MyLoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 const Map<String, String> users = {
@@ -18,7 +18,7 @@ const Map<String, String> users = {
   '30000000-0000-0000-a1a1-000000000003': 'User 3'
 };
 
-class _MyLoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   late String _username = users.keys.first;
   late TextEditingController _passwordController;
   late TextEditingController _endpointController;
@@ -34,7 +34,7 @@ class _MyLoginPageState extends State<LoginPage> {
     _passwordController = TextEditingController(text: '');
     _endpointController = TextEditingController(text: '');
 
-    demoConnector.getEndpoint().then((endpoint) {
+    getPowerSyncEndpoint().then((endpoint) {
       setState(() {
         if (endpoint != null && _endpointController.text == '') {
           _endpointController.text = endpoint;
@@ -56,15 +56,12 @@ class _MyLoginPageState extends State<LoginPage> {
 
       if (mounted) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) =>
-              const MyHomePage(title: 'PowerSync Flutter Demo'),
+          builder: (context) => listsPage,
         ));
       }
     } on HttpException catch (e) {
       _error = e.message;
-    } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
+    } catch (e) {
       _error = e.toString();
     } finally {
       setState(() {
